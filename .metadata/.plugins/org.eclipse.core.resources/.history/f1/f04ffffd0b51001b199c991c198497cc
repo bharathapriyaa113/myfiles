@@ -1,0 +1,464 @@
+package demo.testing;
+
+public class normelOffercoupon {
+
+	public static String s="NETMEDS40";
+	public static WebDriver driver;
+    ExtentHtmlReporter htmlReporter;
+ 
+public static ExtentReports report;
+	public static  ExtentTest logger;
+	@BeforeTest(groups = {"Amazonwithlink","sanity","Amazon","reg","Amazonwithoutlink"})
+    public void startReport() {
+       htmlReporter = new ExtentHtmlReporter("D:\\Eclipse\\nm_website\\Report\\Mahi.html");
+        report = new ExtentReports();
+        report.attachReporter(htmlReporter);
+        report.setSystemInfo("Host name", "localhost");
+        report.setSystemInfo("Environemnt", "QA");
+        
+        report.setSystemInfo("user", "Automation Team");
+         htmlReporter.config().setDocumentTitle("Extent Report Demo");
+        htmlReporter.config().setReportName("Test Report");	
+    }
+	  @Test()
+	public void login() throws InterruptedException {
+		logger =  report.createTest("Login");
+		logger.log(Status.PASS, "*************Login********************" );
+		WebDriver driver = Base.openChrome();
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		try{
+		
+		driver.switchTo().frame("webklipper-publisher-widget-container-notification-frame");
+		driver.findElement(By.xpath("//a[@id='closeButton']")).click();
+		}
+		catch(Exception e){			
+		}
+		System.out.println("closethe popup");
+		Thread.sleep(5000);
+		
+Pom_mahi p=new Pom_mahi(driver);
+SoftAssert softAssertion= new SoftAssert();
+		logger.log(Status.PASS, driver.getTitle() );
+		Base.btnclick(p.getSign_in());
+   		Thread.sleep(3000);
+   		Base.setText(p.getUsername(), "9842528434");
+		Base.btnclick(p.getUSE_password());
+   		Base.setText(p.getPassword(), "admin@321");
+   		Base.btnclick(p.getLogin());
+Thread.sleep(2000);
+   		System.out.println("sign in completed");
+   		Base.btnclick(p.getAction_showcart());
+   		for (int i = 0; i <15; i++) {
+		try{
+			if (p.getRemove().isDisplayed()) {
+				Base.btnclick(p.getRemove());
+				
+			}
+		}catch(Exception ee){
+			break;
+		}
+		}
+   		Thread.sleep(2000);
+   		Base.btnclick(p.getLogo());
+   		Thread.sleep(2000);
+   		logger.log(Status.PASS, "successfully login and navigate to home page" );
+   		Thread.sleep(5000);
+   	//less then 250 for pure otc
+   		Base.setText(p.getSearch(),readValueFromExcelSheet().get(1).get("pure otc product less then mov"));
+   		Base.btnclick(p.getSearch_symbol());
+   		logger.log(Status.PASS, "pure otc product less then mov selected");
+   		System.out.println("select the Product");
+   		Base.btnclick(p.getAdd_to_cart());
+   		   		
+   		   	Thread.sleep(5000);
+   		   		System.out.println("Add to cart");
+   		   		Base.btnclick(p.getAction_showcart());
+   		System.out.println("action showcart");
+   		Base.btnclick(p.getApply_promo_code());
+   		Base.setText(p.getEnter_promo_code(),readValueFromExcelSheet().get(1).get("Offer Code"));
+   		logger.log(Status.PASS, "apply the offer code");
+   		Base.btnclick(p.getApply());
+   		if (!Base.readValueFromExcelSheet().get(1).get("mov").equalsIgnoreCase("0")) {
+   			String texts = Base.gettext(p.getAleart_msg());
+   			System.out.println(texts);
+   			softAssertion.assertEquals(Base.readValueFromExcelSheet().get(1).get("Error msg"), texts);
+   			logger.log(Status.PASS, texts);	
+   		}
+
+		Base.btnclick(p.getRemove());
+	//less then 250 for pure rx
+   		Thread.sleep(2000);
+Base.btnclick(p.getLogo());
+Base.setText(p.getSearch(),readValueFromExcelSheet().get(1).get("Rx product  less then mov"));
+logger.log(Status.PASS, "Rx product  less then mov selected");
+	Base.btnclick(p.getSearch_symbol());
+	System.out.println("select the Product");
+	Base.btnclick(p.getAdd_to_cart());
+	   		
+	   	Thread.sleep(5000);
+	   		System.out.println("Add to cart");
+	   		Base.btnclick(p.getAction_showcart());
+	System.out.println("action showcart");
+	Base.btnclick(p.getApply_promo_code());
+	Base.setText(p.getEnter_promo_code(),readValueFromExcelSheet().get(1).get("Offer Code"));
+	logger.log(Status.PASS, "apply the offer code");
+	Base.btnclick(p.getApply());
+	if (!Base.readValueFromExcelSheet().get(1).get("mov").equalsIgnoreCase("0")) {
+		String texts = Base.gettext(p.getAleart_msg());
+		System.out.println(texts);
+		softAssertion.assertEquals(Base.readValueFromExcelSheet().get(1).get("Error msg"), texts);
+		logger.log(Status.PASS, texts);	
+	}
+
+Base.btnclick(p.getRemove());
+	Thread.sleep(2000);
+Base.btnclick(p.getLogo());
+// 250 for pure otc
+Base.setText(p.getSearch(), readValueFromExcelSheet().get(1).get("pure otc producthigher then mov"));
+logger.log(Status.PASS, "pure otc product higher then mov selected");
+	Base.btnclick(p.getSearch_symbol());
+	logger.log(Status.PASS, "select the Product" );
+	System.out.println("select the Product");
+	Base.btnclick(p.getAdd_to_cart());
+
+	   	Thread.sleep(5000);
+	   		System.out.println("Add to cart");
+	   		Base.btnclick(p.getAction_showcart());
+	System.out.println("action showcart");
+	Base.btnclick(p.getApply_promo_code());
+	Base.setText(p.getEnter_promo_code(),readValueFromExcelSheet().get(1).get("Offer Code"));
+	Base.btnclick(p.getApply());
+	logger.log(Status.PASS, "apply the offer code");
+
+			//250 for RX 
+	logger.log(Status.PASS, "select the Product" );
+	Base.btnclick(p.getRemove());
+		Thread.sleep(2000);
+	Base.btnclick(p.getLogo());
+	Base.setText(p.getSearch(),readValueFromExcelSheet().get(1).get("Rx product  equals to mov"));
+		Base.btnclick(p.getSearch_symbol());
+		logger.log(Status.PASS, "Rx product  equals to mov selected");
+		logger.log(Status.PASS, "select the Product" );
+		System.out.println("select the Product");
+		Base.btnclick(p.getAdd_to_cart());
+		   		
+		   	Thread.sleep(5000);
+		   		System.out.println("Add to cart");
+		   		Base.btnclick(p.getAction_showcart());
+		System.out.println("action showcart");
+		String text2 = Base.gettext(p.getProductprice());
+		String[] ss = text2.split("\\.");
+		long long1 = Long.parseLong(ss[1]);
+		System.out.println(long1);
+		
+		String string =readValueFromExcelSheet().get(1).get("Discountprice");
+		int j = Integer.parseInt(string);
+		long e=long1/j;
+		System.out.println(e);
+		long v=long1-e;
+		Base.btnclick(p.getApply_promo_code());
+		Base.setText(p.getEnter_promo_code(),readValueFromExcelSheet().get(1).get("Offer Code"));
+		Base.btnclick(p.getApply());
+		logger.log(Status.PASS, "apply the offer code");
+
+				Thread.sleep(6000);
+				String text3 = Base.gettext(p.getProductprice());
+				
+
+				System.out.println(text3);
+				String[] s = text3.split("\\.");
+				long lo = Long.parseLong(s[1]);
+				System.out.println(lo);
+				logger.log(Status.PASS, "product price: ="+long1+"\n"+"offer applied"+lo);
+				if(v==lo){
+					System.out.println("offer applied same");
+				}else{
+					System.out.println("offer not applied");
+				}
+				Base.btnclick(p.getRemove());
+				//above 50000 rx product
+				Thread.sleep(3000);
+				Base.btnclick(p.getLogo());
+				Base.setText(p.getSearch(),readValueFromExcelSheet().get(1).get("Rx product  higher then mdp"));
+					Base.btnclick(p.getSearch_symbol());
+					logger.log(Status.PASS, "select the Product" );
+					System.out.println("select the Product");
+					String gettext = Base.gettext(p.getFinalprice());
+					System.out.println(gettext);
+					String rr = gettext.replace(",", "");
+					String[] s2ss = rr.split("\\.");
+					long long11s = Long.parseLong(s2ss[1]);
+					System.out.println(long11s);
+					
+					Base.btnclick(p.getAdd_to_cart());
+					   		
+					   	Thread.sleep(5000);
+					   		System.out.println("Add to cart");
+					   		Base.btnclick(p.getAction_showcart());
+					System.out.println("action showcart");
+					
+					try{
+						Base.btnclick(p.getApply_promo_code());
+						Base.setText(p.getEnter_promo_code(),readValueFromExcelSheet().get(1).get("Offer Code"));
+						Base.btnclick(p.getApply());
+								
+						}catch(Exception ee){
+							
+						}
+					Thread.sleep(5000);
+					String text222 = Base.gettext(p.getDiscountprice());
+						System.out.println(text222);
+					String r = text222.replace(",", "");
+					String[] s2s = r.split("\\.");
+					long long11 = Long.parseLong(s2s[1]);
+					System.out.println(long11);
+					;
+					softAssertion.assertNotEquals(long11s, long11);
+					//Assert.assertNotSame(long11s, long11);
+					
+					
+				long dif=long11s-long11;
+				System.out.println(dif);
+			String g = Base.gettext(p.getNetmeds_discount());
+			String nd=g.replace(",", "");
+			String[] ndd = nd.split("\\.");
+			long nddif=Long.parseLong(ndd[1]);
+			System.out.println(nddif);
+			softAssertion.assertEquals(dif, nddif);
+			softAssertion.assertEquals(dif, 5000);
+			
+			// otc +rx product
+			Base.btnclick(p.getRemove());
+	   		Thread.sleep(2000);
+			Base.btnclick(p.getLogo());
+			Base.setText(p.getSearch(),readValueFromExcelSheet().get(1).get("pure otc product less then mov"));
+			Base.btnclick(p.getSearch_symbol());
+			logger.log(Status.PASS, "select the Product" );
+			System.out.println("select the Product");
+			Base.btnclick(p.getAdd_to_cart());
+			Base.btnclick(p.getAction_showcart());
+			Thread.sleep(2000);
+			Base.btnclick(p.getLogo());
+			Base.setText(p.getSearch(),readValueFromExcelSheet().get(1).get("Rx product  higher then mov"));
+			Base.btnclick(p.getSearch_symbol());
+			logger.log(Status.PASS, "select the Product" );
+			System.out.println("select the Product");
+			Base.btnclick(p.getAdd_to_cart());
+			
+	   		
+		   	Thread.sleep(5000);
+		   		System.out.println("Add to cart");
+		   		Base.btnclick(p.getAction_showcart());
+		System.out.println("action showcart");
+		String rxprice = Base.gettext(p.getDiscount_val());
+		String[] rp = rxprice.split("\\.");
+		long rp1 = Long.parseLong(rp[1]);
+		System.out.println("without discount "+rp1);
+		try{
+			Base.btnclick(p.getApply_promo_code());
+			Base.setText(p.getEnter_promo_code(),readValueFromExcelSheet().get(1).get("Offer Code"));
+			Base.btnclick(p.getApply());
+					
+			}catch(Exception ee){
+				
+			}
+		Thread.sleep(5000);
+		String rxprice2 = Base.gettext(p.getDiscount_val());
+		String[] rp2 = rxprice2.split("\\.");
+		long rp12 = Long.parseLong(rp2[1]);
+		System.out.println("with discount "+rp12);
+		long rxp=rp1-rp12;
+		long rxp1=rxp-1;
+		long rxp2=rxp+1;
+		System.out.println("difference"+rxp);
+		String gettext2 = Base.gettext(p.getMRP_total());
+		String[] mp = gettext2.split("\\.");
+		long mrp=Long.parseLong(mp[1]);
+		System.out.println(mrp);
+		long mrpd=mrp/j;
+		String nm = Base.gettext(p.getNetmeds_discount());
+		String[] nmd = nm.split("\\.");
+		long nmdp=Long.parseLong(nmd[1]);
+		System.out.println(nmdp);
+if(rxp==nmdp){
+	System.out.println("price difference are matched");
+}else if(rxp1==nmdp){
+	System.out.println("price difference are matched");
+
+}else if(rxp2==nmdp){
+	System.out.println("price difference are matched");
+
+}else{
+	System.out.println("proice difference are  not matched");
+
+}
+		softAssertion.assertNotEquals(mrpd, nmdp);
+		Base.btnclick(p.getRemove());
+   		Thread.sleep(1000);
+		Base.btnclick(p.getRemove());
+   		Thread.sleep(2000);
+		Base.btnclick(p.getLogout());
+		Thread.sleep(2000);
+		Base.btnclick(p.getLogout1());
+		Thread.sleep(3000);
+   		Base.setText(p.getUsername(), "9677159095");
+		Base.btnclick(p.getUSE_password());
+   		Base.setText(p.getPassword(), "test4nm");
+   		Base.btnclick(p.getLogin());
+
+   		System.out.println("sign in completed");
+   		try{
+   			
+   			driver.switchTo().frame("webklipper-publisher-widget-container-notification-frame");
+   			driver.findElement(By.xpath("//a[@id='closeButton']")).click();
+   			}
+   			catch(Exception ew){			
+   			}
+   		Thread.sleep(3000);
+   		Base.btnclick(p.getAction_showcart());
+   		for (int i = 0; i <15; i++) {
+   			try{
+   				if (p.getRemove().isDisplayed()) {
+   					Base.btnclick(p.getRemove());
+   					
+   				}
+   			}catch(Exception ee){
+   				break;
+   			}
+   			}
+try{
+   			
+   			driver.switchTo().frame("webklipper-publisher-widget-container-notification-frame");
+   			driver.findElement(By.xpath("//a[@id='closeButton']")).click();
+   			}
+   			catch(Exception ew){			
+   			}
+   		Thread.sleep(2000);
+   		Base.btnclick(p.getLogo());
+   		Thread.sleep(2000);
+   		Base.setText(p.getSearch(),readValueFromExcelSheet().get(1).get("Rx product  equals to mov"));
+   			Base.btnclick(p.getSearch_symbol());
+   			logger.log(Status.PASS, "select the Product" );
+   	   		System.out.println("select the Product");
+   	   		Base.btnclick(p.getAdd_to_cart());
+   	   		   		
+   	   		   	Thread.sleep(5000);
+   	   		   		System.out.println("Add to cart");
+   	   		   		Base.btnclick(p.getAction_showcart());
+   	   		System.out.println("action showcart");
+   			Base.btnclick(p.getNmssupercash());
+   			if(p.getNmswalletamount().isDisplayed()){
+   				System.out.println("nms super csah applied");
+   			}else{
+   				System.out.println("nms super cash not applied");
+   			}
+   			Base.btnclick(p.getApply_promo_code());
+   			Base.btnclick(p.getRemovecoupon());
+   			try{
+   	   			Base.btnclick(p.getRemovecoupon());	
+   			}catch(Exception ee){
+   				
+   			}
+   			Thread.sleep(3000);
+			Base.setText(p.getEnter_promo_code1(),readValueFromExcelSheet().get(1).get("Offer Code"));
+			Base.btnclick(p.getApply());
+			try {
+				
+			
+			if(p.getNmswalletamount().isDisplayed()){
+   				System.out.println("nms super cash not removed after apply the coupon");
+   			}} catch (Exception e2) {
+			
+			
+   				System.out.println("nms super cash removed after apply the coupon");
+   			}
+		softAssertion.assertAll();    
+	  }
+	@AfterMethod(groups = {"Amazonwithlink","sanity","Amazon","reg","Amazonwithoutlink"})
+	public void screenShot(ITestResult result) {
+    	
+        if(result.getStatus() == ITestResult.FAILURE) {
+        	logger.log(Status.FAIL, MarkupHelper.createLabel(result.getName()+" FAILED ", ExtentColor.RED));
+        	logger.fail(result.getThrowable());
+        	try {
+    			
+
+    			TakesScreenshot screenshot = (TakesScreenshot) driver;
+    			File src = screenshot.getScreenshotAs(OutputType.FILE);
+    			FileUtils.copyFile(src, new File("./Report/"+ result.getName()+".png"));
+    			System.out.println("Successfully captured a screenshot");
+    			//logger.log(Status.FAIL, result.getThrowable());
+    			logger.log(Status.FAIL, "Snapshot below: " + logger.addScreenCaptureFromPath( result.getName()+".png"));
+    		
+    	
+    			
+    			
+    		}catch (Exception e) {
+    			e.printStackTrace();
+    		}
+           }
+     
+        else if(result.getStatus() == ITestResult.SUCCESS) {
+        	logger.log(Status.PASS, MarkupHelper.createLabel(result.getName()+" PASSED ", ExtentColor.GREEN));
+        
+        	System.out.println("succcccc");
+        }
+        else {
+        
+        	 // onFinish(context);
+        	logger.log(Status.SKIP, MarkupHelper.createLabel(result.getName()+" SKIPPED ", ExtentColor.ORANGE));
+        	logger.skip(result.getThrowable());
+        	report.removeTest(logger);
+        }}	
+		
+
+
+    @AfterTest(groups = {"Amazonwithlink","sanity","Amazon","reg","Amazonwithoutlink"})
+    public void tearDown() {
+    	//to write or update test information to reporter
+    	report.flush();
+    }
+	
+    public static List<HashMap<String, String>> readValueFromExcelSheet() {
+		List<HashMap<String, String>> mapDatasList = new ArrayList();
+		try {
+			File excelLocaltion = new File("D:\\Eclipse\\nm_website\\driver\\Coupon logic.xlsx");
+
+			String sheetName = s;
+
+			FileInputStream f = new FileInputStream(excelLocaltion);
+			Workbook w = new XSSFWorkbook(f);
+			Sheet sheet = w.getSheet(sheetName);
+			Row headerRow = sheet.getRow(0);
+			for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++) {
+				Row currentRow = sheet.getRow(i);
+				HashMap<String, String> mapDatas = new HashMap<String, String>();
+				for (int j = 0; j < headerRow.getPhysicalNumberOfCells(); j++) {
+					Cell currentCell = currentRow.getCell(j);
+
+					switch (currentCell.getCellType()) {
+					case Cell.CELL_TYPE_STRING:
+						mapDatas.put(headerRow.getCell(j).getStringCellValue(),
+								currentCell.getStringCellValue());
+						break;
+					case Cell.CELL_TYPE_NUMERIC:
+						mapDatas.put(headerRow.getCell(j).getStringCellValue(),
+								String.valueOf(currentCell
+										.getNumericCellValue()));
+
+						break;
+
+					}
+				}
+
+				mapDatasList.add(mapDatas);
+			}
+
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return mapDatasList;
+
+	}
+
+}
